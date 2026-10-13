@@ -3,7 +3,7 @@ import com.guilherme.mercantilapi.repository.ProdutoRepository;
 import com.guilherme.mercantilapi.model.Produto;
 import org.springframework.stereotype.Service;
 import com.guilherme.mercantilapi.exception.ProdutoNaoEncontradoException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
