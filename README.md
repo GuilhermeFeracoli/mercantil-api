@@ -1,55 +1,71 @@
 # Mercantil Nova Estrela API
 
-API REST para gerenciamento de produtos, clientes e vendas, desenvolvida com Java e Spring Boot. O projeto simula operações de um estabelecimento comercial e aplica conceitos de desenvolvimento backend, persistência de dados, validação e testes automatizados.
+API REST desenvolvida com **Java 17 e Spring Boot** para simular as operações de um estabelecimento comercial, incluindo gerenciamento de clientes, produtos e vendas.
+
+O projeto foi desenvolvido com foco no aprendizado de desenvolvimento backend, aplicando arquitetura em camadas, regras de negócio, persistência de dados, validação, autenticação com JWT, testes automatizados, conteinerização e integração contínua.
 
 ## Tecnologias utilizadas
 
-* Java 17
-* Spring Boot
-* Spring Web MVC
-* Spring Data JPA e Hibernate
-* MySQL 8.4
-* Maven
-* Bean Validation
-* JUnit e Mockito
-* H2 para testes
-* Docker e Docker Compose
-* Git e GitHub Actions
+### Backend
+- **Java 17** — linguagem de programação.
+- **Spring Boot** — configuração e execução da aplicação.
+- **Spring Web MVC** — criação dos endpoints REST.
+- **Spring Data JPA** — persistência e consultas ao banco de dados.
+- **Hibernate** — implementação do mapeamento objeto-relacional (ORM).
+- **Spring Security** — autenticação e proteção dos endpoints.
+- **JWT (JSON Web Token)** — autenticação baseada em tokens.
+- **Bean Validation** — validação dos dados recebidos pela API.
+- **Maven** — gerenciamento de dependências e build do projeto.
+
+### Banco de dados
+- **MySQL 8.4** — banco de dados principal da aplicação.
+- **H2 Database** — banco em memória utilizado nos testes automatizados.
+
+### Testes
+- **JUnit** — estrutura para execução dos testes automatizados.
+- **Mockito** — criação de mocks para testes isolados.
+
+### DevOps e ferramentas
+- **Docker** — conteinerização da aplicação.
+- **Docker Compose** — execução integrada da API e do banco de dados.
+- **Git** — controle de versão.
+- **GitHub** — hospedagem do repositório.
+- **GitHub Actions** — automação da compilação e dos testes.
+- **GitHub Container Registry (GHCR)** — armazenamento e publicação da imagem Docker.
 
 ## Funcionalidades
 
-* Cadastro, consulta, atualização e exclusão de produtos.
-* Cadastro, consulta, atualização e exclusão de clientes.
-* Cadastro e consulta de vendas.
-* Validação de dados recebidos pela API.
-* Tratamento de exceções.
-* Persistência de dados com MySQL.
-* Uso de DTOs para organizar requisições e respostas.
-* Testes automatizados de regras de estoque.
-* Integração contínua com GitHub Actions para compilação e testes.
+- Cadastro, consulta, atualização e exclusão de produtos.
+- Cadastro, consulta, atualização e exclusão de clientes.
+- Cadastro e consulta de vendas.
+- Validação dos dados recebidos nas requisições.
+- Tratamento de exceções.
+- Persistência de dados com MySQL.
+- Utilização de DTOs para organizar os dados de entrada e saída.
+- Regras de negócio relacionadas às operações de venda e estoque.
+- Autenticação com Spring Security e JWT.
+- Testes automatizados com JUnit, Mockito e H2.
+- Execução da aplicação e do banco de dados com Docker Compose.
+- Pipeline de CI/CD com GitHub Actions.
 
 ## Arquitetura
 
-O projeto utiliza uma organização em camadas para separar responsabilidades:
+A aplicação utiliza uma arquitetura em camadas para separar responsabilidades e facilitar a manutenção do código.
 
-* **Controller:** recebe as requisições HTTP.
-* **Service:** concentra as regras de negócio.
-* **Repository:** acessa os dados persistidos.
-* **Model:** representa as entidades do sistema.
-* **DTO:** organiza os dados de entrada e saída.
-* **Exception:** reúne classes relacionadas ao tratamento de erros.
-* **Validation:** contém validações específicas.
+- **Controller:** recebe as requisições HTTP e retorna as respostas.
+- **Service:** concentra as regras de negócio.
+- **Repository:** realiza o acesso e a persistência dos dados.
+- **Model:** representa as entidades do sistema.
+- **DTO:** organiza os dados de entrada e saída da API.
+- **Exception:** reúne o tratamento de erros.
+- **Validation:** contém validações específicas.
 
-## Pré-requisitos
+## Como executar o projeto
 
-Para executar a aplicação com Docker:
+### Pré-requisitos
 
-* Docker Desktop instalado e em execução.
-* Git.
-
-Para executar os testes localmente, utilize também o Java 17.
-
-## Como executar com Docker Compose
+- Git instalado.
+- Docker Desktop instalado e em execução.
 
 ### 1. Clone o repositório
 
@@ -58,15 +74,18 @@ git clone https://github.com/GuilhermeFeracoli/mercantil-api.git
 cd mercantil-api
 ```
 
-### 2. Configure a variável de ambiente
+### 2. Configure as variáveis de ambiente
 
-Crie um arquivo `.env` na raiz do projeto com a seguinte variável:
+Crie um arquivo `.env` na raiz do projeto:
 
 ```dotenv
 DB_PASSWORD=sua_senha_local
+JWT_SECRET=sua_chave_secreta
 ```
 
-Substitua `sua_senha_local` por uma senha de sua escolha. Não compartilhe esse arquivo nem envie credenciais para o GitHub.
+Substitua os valores pelos valores locais apropriados. Não compartilhe esse arquivo nem versione credenciais no GitHub.
+
+O segredo JWT deve atender aos requisitos de tamanho e algoritmo utilizados pela aplicação.
 
 ### 3. Inicie os serviços
 
@@ -74,63 +93,84 @@ Substitua `sua_senha_local` por uma senha de sua escolha. Não compartilhe esse 
 docker compose up -d --build
 ```
 
-O Docker Compose iniciará o MySQL e a API, aguardando a disponibilidade do banco antes de iniciar a aplicação.
+O Docker Compose iniciará o MySQL e a API, aguardando a disponibilidade do banco de dados antes de iniciar a aplicação.
 
-### 4. Verifique os serviços
+### 4. Verifique os containers
 
 ```bash
 docker compose ps
 ```
 
-Para consultar os logs da API:
+Para acompanhar os logs da API:
 
 ```bash
 docker compose logs -f api
 ```
 
-### 5. Teste a API
+A API ficará disponível em:
 
-Acesse o endereço abaixo no navegador ou utilize um cliente HTTP:
+`http://localhost:8080`
 
-`http://localhost:8080/produtos`
-
-Para parar os serviços:
+### 5. Encerre os serviços
 
 ```bash
 docker compose down
 ```
 
-Os dados do MySQL ficam armazenados em um volume persistente. O comando `docker compose down -v` também remove esse volume e os dados armazenados nele; utilize-o somente se realmente quiser apagar os dados.
+Os dados do MySQL ficam armazenados em um volume persistente. O comando `docker compose down -v` também remove o volume e os dados locais.
 
-## Executar os testes
+## Executando os testes
 
-No Windows, pelo PowerShell:
+Para executar os testes no Windows, utilizando PowerShell:
 
 ```powershell
 .\mvnw.cmd --batch-mode clean verify
 ```
 
-Esse comando compila a aplicação e executa os testes automatizados.
+O comando compila a aplicação e executa os testes automatizados. O ambiente de testes utiliza H2, reduzindo a dependência de uma instância local do MySQL.
 
-O projeto também possui um workflow do GitHub Actions configurado para executar o build e os testes em eventos de push e pull request.
+## Autenticação
+
+A API utiliza Spring Security e JWT para proteger os endpoints.
+
+### Login
+
+**POST** `/auth/login`
+
+Exemplo de requisição:
+
+```json
+{
+  "username": "seu_usuario",
+  "password": "sua_senha"
+}
+```
+
+O usuário deve estar previamente configurado no banco de dados. A API não disponibiliza um endpoint de cadastro de usuários.
+
+Após autenticar, utilize o token retornado pela aplicação no cabeçalho das requisições protegidas:
+
+```http
+Authorization: Bearer SEU_TOKEN_JWT
+```
 
 ## Endpoints da API
 
-A URL base local é `http://localhost:8080`.
+URL base: `http://localhost:8080`
+
+Os endpoints abaixo exigem autenticação, exceto o endpoint de login.
 
 ### Produtos
 
-| Método | Endpoint         | Descrição           |
-| ------ | ---------------- | ------------------- |
-| GET    | `/produtos`      | Lista os produtos   |
-| GET    | `/produtos/{id}` | Consulta um produto |
-| POST   | `/produtos`      | Cadastra um produto |
-| PUT    | `/produtos/{id}` | Atualiza um produto |
-| DELETE | `/produtos/{id}` | Exclui um produto   |
+| Método | Endpoint | Descrição |
+|---|---|---|
+| GET | `/produtos` | Lista os produtos |
+| GET | `/produtos/{id}` | Consulta um produto |
+| POST | `/produtos` | Cadastra um produto |
+| PUT | `/produtos/{id}` | Atualiza um produto |
+| DELETE | `/produtos/{id}` | Exclui um produto |
 
 Exemplo de cadastro:
-
-**POST** `/produtos`
 
 ```json
 {
@@ -143,27 +183,25 @@ Exemplo de cadastro:
 
 ### Clientes
 
-| Método | Endpoint         | Descrição           |
-| ------ | ---------------- | ------------------- |
-| GET    | `/clientes`      | Lista os clientes   |
-| GET    | `/clientes/{id}` | Consulta um cliente |
-| POST   | `/clientes`      | Cadastra um cliente |
-| PUT    | `/clientes/{id}` | Atualiza um cliente |
-| DELETE | `/clientes/{id}` | Exclui um cliente   |
+| Método | Endpoint | Descrição |
+|---|---|---|
+| GET | `/clientes` | Lista os clientes |
+| GET | `/clientes/{id}` | Consulta um cliente |
+| POST | `/clientes` | Cadastra um cliente |
+| PUT | `/clientes/{id}` | Atualiza um cliente |
+| DELETE | `/clientes/{id}` | Exclui um cliente |
 
-Os campos do cliente incluem nome, endereço, telefone, e-mail e documentos. CPF, CNPJ e inscrição estadual dependem das regras de validação implementadas no projeto.
+Os dados cadastrais incluem informações pessoais e de contato. As validações de documentos dependem das regras implementadas na aplicação.
 
 ### Vendas
 
-| Método | Endpoint       | Descrição          |
-| ------ | -------------- | ------------------ |
-| GET    | `/vendas`      | Lista as vendas    |
-| GET    | `/vendas/{id}` | Consulta uma venda |
-| POST   | `/vendas`      | Cadastra uma venda |
+| Método | Endpoint | Descrição |
+|---|---|---|
+| GET | `/vendas` | Lista as vendas |
+| GET | `/vendas/{id}` | Consulta uma venda |
+| POST | `/vendas` | Cadastra uma venda |
 
 Exemplo de cadastro:
-
-**POST** `/vendas`
 
 ```json
 {
@@ -181,21 +219,34 @@ Exemplo de cadastro:
 }
 ```
 
-**Observações:**
+Regras importantes:
 
-* O cliente informado deve existir.
-* Os produtos informados devem existir.
-* A lista `itens` não pode estar vazia.
-* A quantidade de cada item deve ser positiva.
+- O cliente informado deve existir.
+- Os produtos informados devem existir.
+- A lista de itens não pode estar vazia.
+- A quantidade de cada item deve ser positiva.
 
-Os IDs utilizados são apenas exemplos. Utilize IDs existentes no banco de dados.
+Os IDs são exemplos. Utilize registros existentes no banco de dados.
 
-## Segurança e configuração
+## CI/CD com GitHub Actions
 
-As credenciais do banco são fornecidas por variáveis de ambiente. Arquivos locais com configurações e segredos não devem ser versionados.
+O projeto utiliza GitHub Actions para automatizar o processo de build e testes.
 
-Este projeto é educacional e está em evolução. Antes de utilizá-lo em produção, são necessárias avaliações adicionais de segurança, autorização, tratamento de erros, observabilidade e configuração de ambiente.
+O workflow está configurado para:
 
-## Objetivo de aprendizado
+1. Executar em eventos de `push` e `pull_request`.
+2. Configurar o ambiente com Java 17.
+3. Compilar a aplicação e executar os testes automatizados.
+4. Construir e publicar a imagem Docker no GitHub Container Registry após a conclusão bem-sucedida do build, quando há um `push` na branch `main`.
 
-Este projeto faz parte da minha evolução em desenvolvimento backend com Java, com foco em APIs REST, persistência de dados, regras de negócio, testes automatizados, conteinerização e boas práticas de desenvolvimento.
+Imagem Docker:
+
+`ghcr.io/guilhermeferacoli/mercantil-api`
+
+A publicação automatizada facilita a distribuição da aplicação em formato de container.
+
+## Objetivo do projeto
+
+Este projeto faz parte da minha evolução em desenvolvimento backend com Java, com foco em APIs REST, regras de negócio, persistência de dados, autenticação, testes automatizados, Docker e automação de build e publicação.
+
+O objetivo é aplicar conhecimentos técnicos em uma aplicação prática e evoluir continuamente por meio da implementação de novas funcionalidades e melhorias.
