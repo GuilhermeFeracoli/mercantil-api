@@ -1,3 +1,4 @@
+
 name: Java CI
 
 on:
@@ -6,6 +7,7 @@ on:
 
 jobs:
   build:
+    name: Compilar e testar
     runs-on: ubuntu-latest
 
     steps:
@@ -24,3 +26,15 @@ jobs:
 
       - name: Build and test
         run: ./mvnw --batch-mode clean verify
+
+  docker-build:
+    name: Construir imagem Docker
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t mercantil-api:ci .
