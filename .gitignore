@@ -37,3 +37,10 @@ src/main/resources/application.properties
 .env
 .env.*
 !.env.example
+
+# Arquivos locais e temporários
+.env
+.env.*
+!.env.example
+classpath.txt
+target/

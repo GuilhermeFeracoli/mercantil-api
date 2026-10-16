@@ -1,0 +1,26 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mercantil-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mercantil-api
+  template:
+    metadata:
+      labels:
+        app: mercantil-api
+    spec:
+      containers:
+        - name: mercantil-api
+          image: mercantil-api:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: mercantil-config
+            - secretRef:
+                name: mercantil-secret
